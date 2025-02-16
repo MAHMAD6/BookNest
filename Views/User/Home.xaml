@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BookNest.Views.User.Home"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Home">
+
+    <Grid BackgroundColor="{DynamicResource Primary}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="7*" />
+        </Grid.RowDefinitions>
+
+
+        <!--  || Header ||  -->
+        <Label
+            Grid.Row="0"
+            Margin="20,25,0,0"
+            FontFamily="Aisling"
+            FontSize="55"
+            HorizontalOptions="Start"
+            Text="BookNest"
+            TextColor="{DynamicResource Secondary}"
+            VerticalOptions="Center" />
+
+        
+        <!--|| Search Box ||-->
+        <Frame
+            Grid.Row="1"
+            Margin="10,20,10,50"
+            Padding="15"
+            CornerRadius="12"
+            HeightRequest="60">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image
+                    Grid.Column="0"
+                    Margin="0,0,5,0"
+                    HeightRequest="25"
+                    Source="searchicon.svg" />
+
+                <Entry
+                    Grid.Column="1"
+                    Background="{DynamicResource Secondary}"
+                    FontFamily="NexaHeavy"
+                    FontSize="18"
+                    HeightRequest="50"
+                    Placeholder="Search"
+                    Text="{Binding TextSearched}"
+                    TextColor="Black" />
+            </Grid>
+        </Frame>
+
+
+        <!--  || Content Area ||  -->
+        <Grid
+            Grid.Row="2"
+            ColumnSpacing="15"
+            HorizontalOptions="Center"
+            TranslationY="-20"
+            VerticalOptions="Start">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Column="0"
+                Padding="20,10,20,10"
+                Background="#FF9A83"
+                CornerRadius="10"
+                Text="New" />
+            <Button
+                Grid.Column="1"
+                Padding="20,10,20,10"
+                Background="#FF9A83"
+                CornerRadius="10"
+                Text="Popular" />
+            <Button
+                Grid.Column="2"
+                Padding="20,10,20,10"
+                Background="#F1613E"
+                CornerRadius="10"
+                Text="All">
+                <Button.Shadow>
+                    <Shadow
+                        Brush="#F1613E"
+                        Opacity="0.6"
+                        Radius="10"
+                        Offset="0,5" />
+                </Button.Shadow>
+            </Button>
+        </Grid>
+
+        <CollectionView
+            x:Name="col"
+            Grid.Row="2"
+            Margin="0,50,0,0"
+            ItemsSource="{Binding Books}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <RoundRectangle
+                            Grid.RowSpan="4"
+                            Grid.Column="0"
+                            Margin="20,0,15,0"
+                            BackgroundColor="{DynamicResource Primary}"
+                            CornerRadius="20"
+                            HeightRequest="120"
+                            WidthRequest="95" />
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="0,5"
+                            FontSize="Medium"
+                            HorizontalOptions="Start"
+                            Text="{Binding Title}"
+                            TextColor="Black"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontFamily="NexaExtraLight"
+                            HorizontalOptions="Start"
+                            Text="{Binding Author.Name}"
+                            TextColor="Black" />
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            FontSize="Small"
+                            HorizontalOptions="Start"
+                            Text="{Binding Category.Name}"
+                            TextColor="Black" />
+                        <Frame
+                            Grid.RowSpan="4"
+                            Grid.Column="2"
+                            Margin="0,0,20,0"
+                            BackgroundColor="#F1613E"
+                            CornerRadius="50"
+                            HeightRequest="50"
+                            VerticalOptions="Center"
+                            WidthRequest="50">
+                            <ImageButton
+                                Command="{Binding Path=BindingContext.BorrowBookCommand, Source={x:Reference col}}"
+                                CommandParameter="{Binding}"
+                                HeightRequest="20"
+                                Source="addbookicon.svg"
+                                WidthRequest="20" />
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+
+        <!--  || Fade Effect for popup |  -->
+        <Border
+            Grid.RowSpan="3"
+            Background="Black"
+            IsVisible="{Binding IsPopupVisible}"
+            Opacity="0.7"
+            StrokeThickness="0"
+            ZIndex="1">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ClosePopupCommand}" />
+            </Border.GestureRecognizers>
+        </Border>
+
+
+
+
+        <!--  || Pop Up ||  -->
+
+        <StackLayout
+            Grid.RowSpan="3"
+            IsVisible="{Binding IsPopupVisible}"
+            VerticalOptions="End"
+            ZIndex="1">
+            <Border
+                Padding="10"
+                BackgroundColor="White"
+                StrokeShape="RoundRectangle 20 20 0 0"
+                StrokeThickness="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <RoundRectangle
+                        Grid.Row="0"
+                        Margin="0,0,0,15"
+                        Background="Black"
+                        CornerRadius="10"
+                        HeightRequest="8"
+                        Opacity="0.3"
+                        WidthRequest="100" />
+
+
+
+
+                    <!--  || Add & Edit Author ||  -->
+
+                    <Grid Grid.Row="1" IsVisible="{Binding IsAddEditAuthorVisible}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+            
+                        </Grid.RowDefinitions>
+                        <Label
+                            Grid.Row="0"
+                            Margin="0,0,0,10"
+                            FontSize="24"
+                            HorizontalOptions="Center"
+                            Text="Borrow Book" />
+                        <Frame
+                            Grid.Row="1"
+                            Margin="10"
+                            Padding="20,15,15,15"
+                            CornerRadius="12"
+                            HeightRequest="100">
+                            <VerticalStackLayout>
+                                <Label
+                                    FontFamily="NexaHeavy"
+                                    FontSize="18"
+                                    HorizontalOptions="Start"
+                                    Text="Due Date"
+                                    TextColor="#9B9AA0"
+                                    VerticalOptions="Center" />
+                                <DatePicker Date="{Binding SelectedDate}"
+                                            FontFamily="NexaHeavy"
+                                            TextColor="#C9C9C9"
+                                            Format="D"/>
+                            </VerticalStackLayout>
+                        </Frame>
+
+
+                        <Button
+                            Grid.Row="7"
+                            Margin="0,15,0,15"
+                            Background="Transparent"
+                            BorderColor="{DynamicResource Primary}"
+                            BorderWidth="2"
+                            Command="{Binding BorrowBookConfirmCommand}"
+                            FontFamily="NexaHeavy"
+                            FontSize="18"
+                            HeightRequest="50"
+                            Text="Confirm"
+                            TextColor="{DynamicResource Primary}"
+                            VerticalOptions="Start"
+                            WidthRequest="160" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </StackLayout>
+
+
+
+        <RoundRectangle
+            Grid.Row="2"
+            Background="{DynamicResource White}"
+            CornerRadius="30,30,0,0"
+            ZIndex="-1" />
+    </Grid>
+
+</ContentPage>

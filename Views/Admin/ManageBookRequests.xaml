@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BookNest.Views.Admin.ManageBookRequests"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="ManageBookRequests">
+    <Grid BackgroundColor="{DynamicResource Primary}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  || Header ||  -->
+        <Label
+            Grid.Row="0"
+            Margin="0,25,0,20"
+            FontSize="25"
+            HorizontalOptions="Center"
+            Text="Book Requests"
+            TextColor="{DynamicResource Secondary}"
+            VerticalOptions="Center" />
+
+        <ImageButton
+            Margin="15,25,0,20"
+            HeightRequest="30"
+            HorizontalOptions="Start"
+            Source="notificationicon.svg" />
+
+
+        <CollectionView
+            x:Name="col"
+            Grid.Row="2"
+            Margin="0,15,0,0"
+            >
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="15,10,0,0"
+                            FontSize="Medium"
+                            HorizontalOptions="Start"
+                            Text="The username1 has requested for book 'Harry Potter' by James Charles."
+                            TextColor="Black"
+                            LineBreakMode="WordWrap"
+                            WidthRequest="260"
+                            />
+
+                        <Frame
+                            Grid.RowSpan="4"
+                            Grid.Column="2"
+                            Margin="40,0,0,0"
+                            BackgroundColor="#F1613E"
+                            CornerRadius="50"
+                            HeightRequest="50"
+                            VerticalOptions="Center"
+                            WidthRequest="50">
+                            <ImageButton
+                                Command="{Binding Path=BindingContext.DeleteCategoryCommand, Source={x:Reference col}}"
+                                CommandParameter="{Binding}"
+                                HeightRequest="20"
+                                Source="deleteicon.svg"
+                                WidthRequest="20" />
+                        </Frame>
+                        <Frame
+                            Grid.RowSpan="4"
+                            Grid.Column="2"
+                            Margin="0,0,80,0"
+                            BackgroundColor="#F1613E"
+                            CornerRadius="50"
+                            HeightRequest="50"
+                            VerticalOptions="Center"
+                            WidthRequest="50">
+                            <ImageButton
+                                Command="{Binding Path=BindingContext.EditCategoryCommand, Source={x:Reference col}}"
+                                CommandParameter="{Binding}"
+                                HeightRequest="20"
+                                Source="editicon.svg"
+                                WidthRequest="20" />
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <RoundRectangle
+            Grid.Row="1"
+            Background="{DynamicResource White}"
+            CornerRadius="30,30,0,0"
+            ZIndex="-1" />
+    </Grid>
+</ContentPage>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BookNest.Views.Login.Login"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="">
+
+    <Grid BackgroundColor="{DynamicResource Primary}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".5*" />
+            <RowDefinition Height="1.3*" />
+            <RowDefinition Height=".6*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  || Header ||  -->
+        <HorizontalStackLayout
+            HorizontalOptions="Center"
+            Spacing="15"
+            VerticalOptions="End">
+
+            <Label
+                FontFamily="NexaExtraLight"
+                Text="{Binding LoginChangeHeading}"
+                TextColor="{DynamicResource Secondary}"
+                VerticalOptions="Center" />
+            <Button
+                BackgroundColor="{DynamicResource Primary}"
+                Command="{Binding ChangeMenuCommand}"
+                CornerRadius="3"
+                FontFamily="NexaHeavy"
+                HeightRequest="40"
+                Text="Sign In"
+                TextColor="{DynamicResource Secondary}"
+                VerticalOptions="Center" />
+
+        </HorizontalStackLayout>
+
+        <!--  || Logo ||  -->
+        <Label
+            Grid.Row="1"
+            FontFamily="Aisling"
+            FontSize="105"
+            HorizontalOptions="Center"
+            Text="BookNest"
+            TextColor="{DynamicResource Secondary}"
+            VerticalOptions="Center" />
+
+
+        <!--  || Heading ||  -->
+        <Label
+            Grid.Row="2"
+            Margin="0,20,0,0"
+            FontFamily="NexaHeavy"
+            FontSize="30"
+            HorizontalOptions="Center"
+            Text="{Binding MainHeading}"
+            TextColor="Black"
+            VerticalOptions="Start" />
+
+        <!--  || Form Entries ||  -->
+        <Frame
+            Grid.Row="3"
+            Margin="10"
+            Padding="20,15,15,15"
+            CornerRadius="12"
+            HeightRequest="100">
+            <VerticalStackLayout>
+                <Label
+                    FontFamily="NexaHeavy"
+                    FontSize="18"
+                    HorizontalOptions="Start"
+                    Text="Username"
+                    TextColor="#9B9AA0"
+                    VerticalOptions="Center" />
+                <Entry
+                    Background="{DynamicResource Secondary}"
+                    FontFamily="NexaHeavy"
+                    FontSize="18"
+                    HeightRequest="50"
+                    Placeholder="JohnDoe"
+                    Text="{Binding UserName}"
+                    TextColor="Black" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <Frame
+            Grid.Row="4"
+            Margin="10,-40,10,10"
+            Padding="20,15,15,15"
+            CornerRadius="12"
+            HeightRequest="100">
+            <VerticalStackLayout>
+                <Label
+                    FontFamily="NexaHeavy"
+                    FontSize="18"
+                    HorizontalOptions="Start"
+                    Text="Password"
+                    TextColor="#9B9AA0"
+                    VerticalOptions="Center" />
+                <Entry
+                    Background="{DynamicResource Secondary}"
+                    FontFamily="NexaHeavy"
+                    FontSize="18"
+                    HeightRequest="50"
+                    IsPassword="True"
+                    Placeholder="xxxxxxxx"
+                    Text="{Binding Password}"
+                    TextColor="Black" />
+
+            </VerticalStackLayout>
+        </Frame>
+
+        <Button
+            Grid.Row="5"
+            Background="Transparent"
+            BorderColor="{DynamicResource Primary}"
+            BorderWidth="2"
+            Command="{Binding ConfirmLoginCommand}"
+            FontFamily="NexaHeavy"
+            FontSize="20"
+            HeightRequest="60"
+            Text="Confirm"
+            TextColor="{DynamicResource Primary}"
+            VerticalOptions="Start"
+            WidthRequest="200" />
+
+        <RoundRectangle
+            Grid.Row="2"
+            Grid.RowSpan="5"
+            Background="{DynamicResource Secondary}"
+            CornerRadius="30,30,0,0"
+            ZIndex="-1" />
+        <RoundRectangle
+            Grid.Row="2"
+            Grid.RowSpan="5"
+            Margin="10,0"
+            Background="{DynamicResource White}"
+            CornerRadius="30,30,0,0"
+            Opacity="0.3"
+            TranslationY="-12"
+            ZIndex="-1" />
+    </Grid>
+</ContentPage>

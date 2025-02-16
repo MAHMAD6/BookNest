@@ -1,0 +1,62 @@
+# Build and binary files
+bin/
+obj/
+AppPackages/
+build/
+platforms/
+
+# User-specific files
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.swp
+
+# NuGet packages and cache
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+
+# MAUI-specific files
+AppPackages/
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.tlog
+*.xcuserstate
+
+# macOS/iOS/Xcode specific
+*.pbxproj
+*.xcworkspace/
+*.xcuserdatad/
+*.mode1v3
+*.mode2v3
+*.DS_Store
+*.ipa
+*.dSYM/
+__MACOSX/
+
+# Android specific
+*.apk
+*.aab
+*.keystore
+
+# Windows specific
+*.pdb
+*.ilk
+*.ipch
+*.obj
+*.exp
+*.log
+*.cache
+
+# Ignore secret files
+secrets.json
+appsettings.json
+appsettings.*.json

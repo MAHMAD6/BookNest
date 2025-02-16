@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BookNest.Views.Admin.Books"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Books">
+    <Grid BackgroundColor="{DynamicResource Primary}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="7*" />
+        </Grid.RowDefinitions>
+
+
+        <!--  || Header ||  -->
+        <Label
+            Grid.Row="0"
+            Margin="20,25,0,0"
+            FontFamily="Aisling"
+            FontSize="55"
+            HorizontalOptions="Start"
+            Text="BookNest"
+            TextColor="{DynamicResource Secondary}"
+            VerticalOptions="Center" />
+
+        <ImageButton
+            Margin="0,25,5,0"
+            HeightRequest="30"
+            HorizontalOptions="End"
+            Source="notificationicon.svg" 
+            Command="{Binding GoToBookRequestCommand}"
+            />
+
+
+
+        <Frame
+            Grid.Row="1"
+            Margin="10,20,10,50"
+            Padding="15"
+            CornerRadius="12"
+            HeightRequest="60">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image
+                    Grid.Column="0"
+                    Margin="0,0,5,0"
+                    HeightRequest="25"
+                    Source="searchicon.svg" />
+
+                <Entry
+                    Grid.Column="1"
+                    Background="{DynamicResource Secondary}"
+                    FontFamily="NexaHeavy"
+                    FontSize="18"
+                    HeightRequest="50"
+                    Placeholder="Search"
+                    Text="{Binding TextSearched}"
+                    TextColor="Black" />
+            </Grid>
+        </Frame>
+
+
+
+        <!--#region ContentArea-->
+        <Frame
+            Grid.Row="2"
+            Padding="-10,5,10,5"
+            Background="{DynamicResource Tertiary}"
+            BorderColor="Transparent"
+            CornerRadius="10"
+            HorizontalOptions="Center"
+            TranslationY="-20"
+            VerticalOptions="Start">
+            <Frame.Shadow>
+                <Shadow
+                    Brush="#F1613E"
+                    Opacity="1"
+                    Radius="20"
+                    Offset="0,15" />
+            </Frame.Shadow>
+            <HorizontalStackLayout>
+                <ImageButton
+                    Command="{Binding AddBookCommand}"
+                    HeightRequest="20"
+                    Source="addicon.svg" />
+                <Button
+                    Margin="-30,0,00,0"
+                    Background="Transparent"
+                    Command="{Binding AddBookCommand}"
+                    FontSize="16"
+                    Text="Add new Book"
+                    TextColor="{DynamicResource Secondary}"
+                    VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </Frame>
+
+        <CollectionView
+            x:Name="col"
+            Grid.Row="2"
+            Margin="0,50,0,0"
+            ItemsSource="{Binding Books}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <RoundRectangle
+                            Grid.RowSpan="4"
+                            Grid.Column="0"
+                            Margin="20,0,15,0"
+                            BackgroundColor="{DynamicResource Primary}"
+                            CornerRadius="20"
+                            HeightRequest="120"
+                            WidthRequest="95" />
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="0,5"
+                            FontSize="Medium"
+                            HorizontalOptions="Start"
+                            Text="{Binding Title}"
+                            TextColor="Black"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontFamily="NexaExtraLight"
+                            HorizontalOptions="Start"
+                            Text="{Binding Author.Name, StringFormat='By : {0}'}"
+                            TextColor="Black" />
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            FontSize="Small"
+                            HorizontalOptions="Start"
+                            Text="{Binding Category.Name}"
+                            TextColor="Black" />
+                        <Frame
+                            Grid.RowSpan="4"
+                            Grid.Column="2"
+                            Margin="40,0,0,0"
+                            BackgroundColor="#F1613E"
+                            CornerRadius="50"
+                            HeightRequest="50"
+                            VerticalOptions="Center"
+                            WidthRequest="50">
+                            <ImageButton
+                                Command="{Binding Path=BindingContext.DeleteBookCommand, Source={x:Reference col}}"
+                                CommandParameter="{Binding}"
+                                HeightRequest="20"
+                                Source="deleteicon.svg"
+                                WidthRequest="20" />
+                        </Frame>
+                        <Frame
+                            Grid.RowSpan="4"
+                            Grid.Column="2"
+                            Margin="0,0,80,0"
+                            BackgroundColor="#F1613E"
+                            CornerRadius="50"
+                            HeightRequest="50"
+                            VerticalOptions="Center"
+                            WidthRequest="50">
+                            <ImageButton
+                                Command="{Binding Path=BindingContext.EditBookCommand, Source={x:Reference col}}"
+                                CommandParameter="{Binding}"
+                                HeightRequest="20"
+                                Source="editicon.svg"
+                                WidthRequest="20" />
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <!--#endregion-->
+
+
+        <!--#region PopUp-->
+
+
+        <!--  || Fade Effect for popup |  -->
+        <Border
+            Grid.RowSpan="3"
+            Background="Black"
+            IsVisible="{Binding IsPopupVisible}"
+            Opacity="0.7"
+            StrokeThickness="0"
+            ZIndex="1">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ClosePopupCommand}" />
+            </Border.GestureRecognizers>
+        </Border>
+
+
+
+        <!--  || Pop Up ||  -->
+        <StackLayout
+            Grid.RowSpan="3"
+            IsVisible="{Binding IsPopupVisible}"
+            VerticalOptions="End"
+            ZIndex="1">
+            <Border
+                Padding="10"
+                BackgroundColor="White"
+                StrokeShape="RoundRectangle 20 20 0 0"
+                StrokeThickness="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <RoundRectangle
+                        Grid.Row="0"
+                        Margin="0,0,0,15"
+                        Background="Black"
+                        CornerRadius="10"
+                        HeightRequest="8"
+                        Opacity="0.3"
+                        WidthRequest="100" />
+
+                    <!--  || Delete Book ||  -->
+                    <Grid Grid.Row="1" IsVisible="{Binding IsDeleteBookVisible}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label
+                            Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                            Margin="0,0,0,10"
+                            FontSize="24"
+                            HorizontalOptions="Center"
+                            Text="Delete Book" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Margin="0,0,0,10"
+                            Padding="10,0,10,0"
+                            FontFamily="NexaExtraLight"
+                            FontSize="16"
+                            HorizontalOptions="Center"
+                            Text="All current Transactions will be deleted. Are you sure?" />
+                        <Button
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Margin="0,15,0,15"
+                            Background="Transparent"
+                            BorderColor="{DynamicResource Primary}"
+                            BorderWidth="2"
+                            Command="{Binding DeleteBookCommand}"
+                            FontFamily="NexaHeavy"
+                            FontSize="18"
+                            HeightRequest="50"
+                            Text="Confirm"
+                            TextColor="{DynamicResource Primary}"
+                            VerticalOptions="Start"
+                            WidthRequest="160" />
+                        <Button
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="0,15,0,15"
+                            Background="{DynamicResource Primary}"
+                            BorderColor="{DynamicResource Primary}"
+                            BorderWidth="2"
+                            Command="{Binding DeleteCancelCommand}"
+                            FontFamily="NexaHeavy"
+                            FontSize="18"
+                            HeightRequest="50"
+                            Text="No"
+                            TextColor="{DynamicResource Secondary}"
+                            VerticalOptions="Start"
+                            WidthRequest="160" />
+                    </Grid>
+
+                    <!--  || Add & Edit book ||  -->
+                    <Grid Grid.Row="1" IsVisible="{Binding IsAddEditBookVisible}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Label
+                            Grid.Row="1"
+                            Margin="0,0,0,10"
+                            FontSize="24"
+                            HorizontalOptions="Center"
+                            Text="{Binding AddEditBookHeading}" />
+                        <Frame
+                            Grid.Row="2"
+                            Margin="10"
+                            Padding="20,15,15,15"
+                            CornerRadius="12"
+                            HeightRequest="100">
+                            <VerticalStackLayout>
+                                <Label
+                                    FontFamily="NexaHeavy"
+                                    FontSize="18"
+                                    HorizontalOptions="Start"
+                                    Text="Title"
+                                    TextColor="#9B9AA0"
+                                    VerticalOptions="Center" />
+                                <Entry
+                                    Background="{DynamicResource Secondary}"
+                                    FontFamily="NexaHeavy"
+                                    FontSize="18"
+                                    HeightRequest="50"
+                                    Placeholder="e.g. Great Gatsby"
+                                    Text="{Binding Title}"
+                                    TextColor="Black" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <Frame
+                            Grid.Row="3"
+                            Margin="10"
+                            Padding="20,15,15,15"
+                            CornerRadius="12"
+                            HeightRequest="100">
+                            <VerticalStackLayout>
+                                <Label
+                                    FontFamily="NexaHeavy"
+                                    FontSize="18"
+                                    HorizontalOptions="Start"
+                                    Text="Author"
+                                    TextColor="#9B9AA0"
+                                    VerticalOptions="Center" />
+
+                                <Picker
+                                    Title="Select Author"
+                                    Grid.Row="6"
+                                    FontFamily="NexaHeavy"
+                                    FontSize="16"
+                                    ItemDisplayBinding="{Binding Name}"
+                                    ItemsSource="{Binding Authors}"
+                                    SelectedItem="{Binding SelectedAuthor, Mode=TwoWay}" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <Frame
+                            Grid.Row="4"
+                            Margin="10"
+                            Padding="20,15,15,15"
+                            CornerRadius="12"
+                            HeightRequest="100">
+                            <VerticalStackLayout>
+                                <Label
+                                    FontFamily="NexaHeavy"
+                                    FontSize="18"
+                                    HorizontalOptions="Start"
+                                    Text="ISBN"
+                                    TextColor="#9B9AA0"
+                                    VerticalOptions="Center" />
+                                <Entry
+                                    Background="{DynamicResource Secondary}"
+                                    FontFamily="NexaHeavy"
+                                    FontSize="18"
+                                    HeightRequest="50"
+                                    Placeholder="e.g. 31033333"
+                                    Text="{Binding ISBN}"
+                                    TextColor="Black" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <Frame
+                            Grid.Row="5"
+                            Margin="10"
+                            Padding="20,15,15,15"
+                            CornerRadius="12"
+                            HeightRequest="100">
+                            <VerticalStackLayout>
+                                <Label
+                                    FontFamily="NexaHeavy"
+                                    FontSize="18"
+                                    HorizontalOptions="Start"
+                                    Text="Availability Status"
+                                    TextColor="#9B9AA0"
+                                    VerticalOptions="Center" />
+                                <Entry
+                                    Background="{DynamicResource Secondary}"
+                                    FontFamily="NexaHeavy"
+                                    FontSize="18"
+                                    HeightRequest="50"
+                                    Placeholder="e.g. available"
+                                    Text="{Binding AvailabilityStatus}"
+                                    TextColor="Black" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <Frame
+                            Grid.Row="6"
+                            Margin="10"
+                            Padding="20,15,15,15"
+                            CornerRadius="12"
+                            HeightRequest="100">
+                            <VerticalStackLayout>
+                                <Label
+                                    FontFamily="NexaHeavy"
+                                    FontSize="18"
+                                    HorizontalOptions="Start"
+                                    Text="Category"
+                                    TextColor="#9B9AA0"
+                                    VerticalOptions="Center" />
+                                <Picker
+                                    Title="Select Category"
+                                    FontFamily="NexaHeavy"
+                                    FontSize="16"
+                                    ItemDisplayBinding="{Binding Name}"
+                                    ItemsSource="{Binding Categories}"
+                                    SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+
+
+                        <Button
+                            Grid.Row="7"
+                            Margin="0,15,0,15"
+                            Background="Transparent"
+                            BorderColor="{DynamicResource Primary}"
+                            BorderWidth="2"
+                            Command="{Binding AddEditBookConfirmCommand}"
+                            FontFamily="NexaHeavy"
+                            FontSize="18"
+                            HeightRequest="50"
+                            Text="Confirm"
+                            TextColor="{DynamicResource Primary}"
+                            VerticalOptions="Start"
+                            WidthRequest="160" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </StackLayout>
+        <!--#endregion-->
+
+        <RoundRectangle
+            Grid.Row="2"
+            Background="{DynamicResource White}"
+            CornerRadius="30,30,0,0"
+            ZIndex="-1" />
+    </Grid>
+
+</ContentPage>

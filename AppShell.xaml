@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="BookNest.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:BookNest"
+    xmlns:login="clr-namespace:BookNest.Views.Login"
+    xmlns:user="clr-namespace:BookNest.Views.User"
+    xmlns:admin="clr-namespace:BookNest.Views.Admin"
+    Shell.NavBarIsVisible="False"
+    Title="BookNest">
+    <ShellContent ContentTemplate="{DataTemplate login:Login}" Route="Login"/>
+    <ShellContent ContentTemplate="{DataTemplate user:UserMenu}" Route="User"/>
+    <ShellContent ContentTemplate="{DataTemplate admin:AdminMenu}" Route="Admin"/>
+    <ShellContent
+         ContentTemplate="{DataTemplate admin:ManageBookRequests}"
+         Route="BookRequests" />
+</Shell>
