@@ -3,7 +3,7 @@ bin/
 obj/
 AppPackages/
 build/
-platforms/
+
 
 # User-specific files
 .vs/
@@ -56,7 +56,3 @@ __MACOSX/
 *.log
 *.cache
 
-# Ignore secret files
-secrets.json
-appsettings.json
-appsettings.*.json
