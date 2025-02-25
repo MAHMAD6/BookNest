@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="BookNest.Views.Admin.ManageBookRequests"
+    x:Class="BookNest.Views.User.BookRequestResponses"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:components="clr-namespace:BookNest.ViewModels.Components"
-    Title="ManageBookRequests">
+    Title="BookRequestResponses">
 
 
     <ContentPage.Resources>
         <components:TransactionMessageConverter x:Key="TransactionMessageConverter" />
     </ContentPage.Resources>
-
 
     <Grid BackgroundColor="{DynamicResource Primary}">
         <Grid.RowDefinitions>
@@ -39,7 +38,7 @@
             x:Name="col"
             Grid.Row="2"
             Margin="0,15,0,0"
-            ItemsSource="{Binding Requests}">
+            ItemsSource="{Binding Responses}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0,10">
@@ -48,6 +47,8 @@
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
+
+
                         <Label
                             Grid.Row="0"
                             Grid.Column="0"
@@ -55,47 +56,32 @@
                             FontSize="Medium"
                             HorizontalOptions="Start"
                             LineBreakMode="WordWrap"
-                            TextColor="Black"
-                            WidthRequest="260">
+                            TextColor="Black">
+                            <!--  WidthRequest="260"  -->
                             <Label.Text>
-                                <MultiBinding Converter="{StaticResource TransactionMessageConverter}">
+                                <MultiBinding Converter="{StaticResource TransactionMessageConverter}" ConverterParameter="Response">
                                     <Binding Path="Book" />
-                                    <Binding Path="User.Username" />
+                                    <Binding Path="Status" />
                                 </MultiBinding>
                             </Label.Text>
                         </Label>
-                        <Frame
-                            Grid.RowSpan="4"
+
+                        <!--<Frame
                             Grid.Column="2"
-                            Margin="40,0,0,0"
-                            BackgroundColor="#F1613E"
+                            Margin="40,0,20,0"
+                            BackgroundColor="#f1613e"
                             CornerRadius="50"
                             HeightRequest="50"
                             VerticalOptions="Center"
                             WidthRequest="50">
                             <ImageButton
-                                Command="{Binding Path=BindingContext.RejectCommand, Source={x:Reference col}}"
+                                Command="{Binding Path=Bindingcontext.DeleteCommand, Source={x:Reference col}}"
                                 CommandParameter="{Binding}"
                                 HeightRequest="20"
-                                Source="cancelicon.png"
+                                Source="deleteicon.svg"
                                 WidthRequest="20" />
-                        </Frame>
-                        <Frame
-                            Grid.RowSpan="4"
-                            Grid.Column="2"
-                            Margin="0,0,80,0"
-                            BackgroundColor="#41C95F"
-                            CornerRadius="50"
-                            HeightRequest="50"
-                            VerticalOptions="Center"
-                            WidthRequest="50">
-                            <ImageButton
-                                Command="{Binding Path=BindingContext.AcceptCommand, Source={x:Reference col}}"
-                                CommandParameter="{Binding}"
-                                HeightRequest="20"
-                                Source="okicon.png"
-                                WidthRequest="20" />
-                        </Frame>
+                        </Frame>-->
+
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

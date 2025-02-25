@@ -1,6 +1,7 @@
 ﻿using BookNest.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.VisualBasic;
 using System.Collections.ObjectModel;
 using System.Xml.Linq;
 
@@ -10,6 +11,16 @@ namespace BookNest.ViewModels.User
     {
 
         #region PROPERTIES
+
+        // Snack Bar
+
+        [ObservableProperty]
+        private float _snackBarOpacity = 0;
+
+        [ObservableProperty]
+        private string _snackBarMessage = string.Empty;
+
+        //
 
         private string textSearch = string.Empty;
 
@@ -43,6 +54,7 @@ namespace BookNest.ViewModels.User
         public HomeViewModel()
         {
             LoadBooks();
+
         }
 
 
@@ -52,17 +64,33 @@ namespace BookNest.ViewModels.User
         [RelayCommand]
         private void BorrowBookConfirm()
         {
-
-            if (tempBook != null)
+            if (SelectedDate < DateTime.Now)
             {
-                Transaction newTransaction = new Transaction
+                ShowSnackBar("Invalid Due Date");
+                return;
+            }
+
+            if (App.CurrentUser != null)
+            {
+                if (tempBook != null)
                 {
-                    UserId = 1,
-                    BookId = tempBook.Id,
-                    Status = "InProcessing",
+                    var alreadyRequested = App.TransactionsRepo.GetItem(t => t.UserId == App.CurrentUser.Id && t.BookId == tempBook.Id && SelectedDate.Date == t.DueDate.Date);
+                    if (alreadyRequested != null)
+                    {
+                        ShowSnackBar("RequestAlreadySent");
+                    }
 
-                };
-
+                    Transaction newTransaction = new Transaction
+                    {
+                        UserId = App.CurrentUser.Id,
+                        BookId = tempBook.Id,
+                        Status = "InProcessing",
+                        DueDate = SelectedDate
+                    };
+                    App.TransactionsRepo.SaveItem(newTransaction);
+                    ShowSnackBar("Request Sent");
+                    ClosePopup();
+                }
             }
         }
 
@@ -78,8 +106,35 @@ namespace BookNest.ViewModels.User
         private void ClosePopup()
         {
             IsPopupVisible = false;
-            selectedDate = DateTime.Now;
+            SelectedDate = DateTime.Now;
         }
+
+        [RelayCommand]
+        private async Task GoToResponses()
+        {
+            await Shell.Current.GoToAsync("//BookResponses");
+        }
+
+
+
+
+        [RelayCommand]
+        private void All()
+        {
+            TextSearched = string.Empty;
+            LoadBooks();
+        }
+
+        [RelayCommand]
+        private void New()
+        {
+            var filteredBooks = App.BooksRepo.GetItemsWithChildren(b => b.CreatedAt > DateTime.Now.AddDays(-3));
+            foreach (var book in filteredBooks)
+            {
+                Books.Add(book);
+            }
+        }
+
         #endregion
 
 
@@ -96,6 +151,28 @@ namespace BookNest.ViewModels.User
             {
                 Books.Add(book);
             }
+        }
+
+        private async void ShowSnackBar(string message)
+        {
+            SnackBarMessage = message;
+
+
+            for (float i = 0.0f; i <= 0.9f; i += 0.1f)
+            {
+                SnackBarOpacity = i;
+                await Task.Delay(50);
+            }
+
+            await Task.Delay(4000);
+
+
+            for (float i = 0.9f; i >= 0.0f; i -= 0.1f)
+            {
+                SnackBarOpacity = i;
+                await Task.Delay(50);
+            }
+            SnackBarOpacity = 0;
         }
     }
 }

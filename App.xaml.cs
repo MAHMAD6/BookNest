@@ -29,7 +29,10 @@ namespace BookNest
             AuthorsRepo = authorsRepo;
             CategoriesRepo = categoriesRepo;
             FinesRepo =  finesRepo;
+
             MainPage = new AppShell();
+
+            //MainPage = new BookRequestResponses();
         }
     }
 }

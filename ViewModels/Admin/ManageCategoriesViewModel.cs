@@ -1,4 +1,5 @@
 ﻿using BookNest.Models;
+using BookNest.ViewModels.Components;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -9,6 +10,16 @@ namespace BookNest.ViewModels.Admin
     public partial class ManageCategoriesViewModel : ObservableObject
     {
         #region PROPERTIES
+
+        // Snack Bar
+
+        [ObservableProperty]
+        private float _snackBarOpacity = 0;
+
+        [ObservableProperty]
+        private string _snackBarMessage = string.Empty;
+
+        //
 
         private string textSearch = string.Empty;
         public string TextSearched
@@ -69,7 +80,7 @@ namespace BookNest.ViewModels.Admin
         {
             tempCategory = category;
             Name = tempCategory.Name;
-            AddEditCategoryHeading = "Edit Author";
+            AddEditCategoryHeading = "Edit Category";
             IsPopupVisible = true;
             IsAddEditCategoryVisible = true;
             tempCategory = category;
@@ -78,6 +89,11 @@ namespace BookNest.ViewModels.Admin
         [RelayCommand]
         private void AddEditConfirm()
         {
+            if (!Validation.IsValidName(Name))
+            {
+                ShowSnackBar("Invalid Category");
+                return;
+            }
             if (isAddCategory)
             {
                 tempCategory = new Category { Name = Name };
@@ -143,6 +159,28 @@ namespace BookNest.ViewModels.Admin
             {
                 Categories.Add(category);
             }
+        }
+
+        private async void ShowSnackBar(string message)
+        {
+            SnackBarMessage = message;
+
+
+            for (float i = 0.0f; i <= 0.9f; i += 0.1f)
+            {
+                SnackBarOpacity = i;
+                await Task.Delay(50);
+            }
+
+            await Task.Delay(4000);
+
+
+            for (float i = 0.9f; i >= 0.0f; i -= 0.1f)
+            {
+                SnackBarOpacity = i;
+                await Task.Delay(50);
+            }
+            SnackBarOpacity = 0;
         }
     }
 }

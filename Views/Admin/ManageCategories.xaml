@@ -323,6 +323,30 @@
             Background="{DynamicResource White}"
             CornerRadius="30,30,0,0"
             ZIndex="-1" />
+
+        <!--  || SNACKBAR ||  -->
+        <Border
+            Grid.RowSpan="6"
+            Background="Black"
+            HorizontalOptions="Center"
+            InputTransparent="True"
+            Opacity="{Binding SnackBarOpacity}"
+            Stroke="Transparent"
+            StrokeShape="RoundRectangle 5"
+            VerticalOptions="Center"
+            ZIndex="100">
+            <Border.Shadow>
+                <Shadow Brush="Black" Radius="30" />
+            </Border.Shadow>
+            <Label
+                Padding="10"
+                InputTransparent="True"
+                Text="{Binding SnackBarMessage}"
+                TextColor="White"
+                VerticalOptions="Center"
+                ZIndex="101" />
+        </Border>
+
     </Grid>
 
 </ContentPage>

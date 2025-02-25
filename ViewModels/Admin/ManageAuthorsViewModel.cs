@@ -1,4 +1,5 @@
 ﻿using BookNest.Models;
+using BookNest.ViewModels.Components;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -9,6 +10,16 @@ namespace BookNest.ViewModels.Admin
     {
 
         #region PROPERTIES
+
+        // Snack Bar
+
+        [ObservableProperty]
+        private float _snackBarOpacity = 0;
+
+        [ObservableProperty]
+        private string _snackBarMessage = string.Empty;
+
+        //
 
         private string textSearch = string.Empty;
         public string TextSearched
@@ -78,6 +89,12 @@ namespace BookNest.ViewModels.Admin
         [RelayCommand]
         private void AddEditConfirm()
         {
+            if (!Validation.IsValidName(Name))
+            {
+                ShowSnackBar("Invalid name");
+                return;
+            }
+
             if (isAddAuthor)
             {
                 tempAuthor = new Author { Name = Name };
@@ -143,6 +160,28 @@ namespace BookNest.ViewModels.Admin
             {
                 Authors.Add(book);
             }
+        }
+
+        private async void ShowSnackBar(string message)
+        {
+            SnackBarMessage = message;
+
+
+            for (float i = 0.0f; i <= 0.9f; i += 0.1f)
+            {
+                SnackBarOpacity = i;
+                await Task.Delay(50);
+            }
+
+            await Task.Delay(4000);
+
+
+            for (float i = 0.9f; i >= 0.0f; i -= 0.1f)
+            {
+                SnackBarOpacity = i;
+                await Task.Delay(50);
+            }
+            SnackBarOpacity = 0;
         }
     }
 }

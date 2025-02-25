@@ -3,16 +3,64 @@
     x:Class="BookNest.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:admin="clr-namespace:BookNest.Views.Admin"
     xmlns:local="clr-namespace:BookNest"
     xmlns:login="clr-namespace:BookNest.Views.Login"
     xmlns:user="clr-namespace:BookNest.Views.User"
-    xmlns:admin="clr-namespace:BookNest.Views.Admin"
+    Title="BookNest"
     Shell.NavBarIsVisible="False"
-    Title="BookNest">
-    <ShellContent ContentTemplate="{DataTemplate login:Login}" Route="Login"/>
-    <ShellContent ContentTemplate="{DataTemplate user:UserMenu}" Route="User"/>
-    <ShellContent ContentTemplate="{DataTemplate admin:AdminMenu}" Route="Admin"/>
-    <ShellContent
-         ContentTemplate="{DataTemplate admin:ManageBookRequests}"
-         Route="BookRequests" />
+    Shell.TabBarBackgroundColor="White"
+    Shell.TabBarForegroundColor="Red"
+    Shell.TabBarUnselectedColor="Gray">
+    <ShellContent ContentTemplate="{DataTemplate login:Login}" Route="Login" />
+    <ShellContent ContentTemplate="{DataTemplate admin:ManageBookRequests}" Route="BookRequests" />
+    <ShellContent ContentTemplate="{DataTemplate user:BookRequestResponses}" Route="BookResponses" />
+
+
+    <TabBar Route="Admin">
+        <ShellContent
+            Title="Books"
+            ContentTemplate="{DataTemplate admin:Books}"
+            Icon="bookmenuicon.svg"
+            Route="ManageBooks" />
+        <ShellContent
+            Title="Authors"
+            ContentTemplate="{DataTemplate admin:ManageAuthors}"
+            Icon="authoricon.png"
+            Route="ManageAuthors" />
+        <ShellContent
+            Title="Categories"
+            ContentTemplate="{DataTemplate admin:ManageCategories}"
+            Icon="categoryicon.png"
+            Route="ManageCategories" />
+        <ShellContent
+            Title="Transactions"
+            ContentTemplate="{DataTemplate admin:Transactions}"
+            Icon="transactionmenuicon.svg"
+            Route="Transactions" />
+        <ShellContent
+            Title="Profile"
+            ContentTemplate="{DataTemplate user:Profile}"
+            Icon="profilemenuicon.svg"
+            Route="Profile" />
+    </TabBar>
+
+    <TabBar Route="User">
+        <ShellContent
+            Title="Books"
+            ContentTemplate="{DataTemplate user:Home}"
+            Icon="homeicon.svg"
+            Route="Home" />
+        <ShellContent
+            Title="Library"
+            ContentTemplate="{DataTemplate user:Library}"
+            Icon="libraryicon.svg"
+            Route="Library" />
+        <ShellContent
+            Title="Profile"
+            ContentTemplate="{DataTemplate user:Profile}"
+            Icon="profilemenuicon.svg"
+            Route="Profile" />
+    </TabBar>
+
 </Shell>

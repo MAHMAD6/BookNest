@@ -24,8 +24,18 @@
             TextColor="{DynamicResource Secondary}"
             VerticalOptions="Center" />
 
-        
-        <!--|| Search Box ||-->
+        <ImageButton
+            Margin="0,25,5,0"
+            Command="{Binding GoToResponsesCommand}"
+            HeightRequest="30"
+            HorizontalOptions="End"
+            Source="notificationicon.svg" />
+
+
+
+
+
+        <!--  || Search Box ||  -->
         <Frame
             Grid.Row="1"
             Margin="10,20,10,50"
@@ -76,15 +86,10 @@
                 CornerRadius="10"
                 Text="New" />
             <Button
-                Grid.Column="1"
-                Padding="20,10,20,10"
-                Background="#FF9A83"
-                CornerRadius="10"
-                Text="Popular" />
-            <Button
                 Grid.Column="2"
                 Padding="20,10,20,10"
                 Background="#F1613E"
+                Command="{Binding AllCommand}"
                 CornerRadius="10"
                 Text="All">
                 <Button.Shadow>
@@ -116,14 +121,15 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <RoundRectangle
+                        <Image
+                            Source="bookicon.png"
                             Grid.RowSpan="4"
                             Grid.Column="0"
                             Margin="20,0,15,0"
-                            BackgroundColor="{DynamicResource Primary}"
-                            CornerRadius="20"
                             HeightRequest="120"
-                            WidthRequest="95" />
+                            WidthRequest="86"/>
+
+                        
                         <Label
                             Grid.Row="0"
                             Grid.Column="1"
@@ -222,7 +228,7 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
-            
+
                         </Grid.RowDefinitions>
                         <Label
                             Grid.Row="0"
@@ -244,10 +250,11 @@
                                     Text="Due Date"
                                     TextColor="#9B9AA0"
                                     VerticalOptions="Center" />
-                                <DatePicker Date="{Binding SelectedDate}"
-                                            FontFamily="NexaHeavy"
-                                            TextColor="#C9C9C9"
-                                            Format="D"/>
+                                <DatePicker
+                                    Date="{Binding SelectedDate}"
+                                    FontFamily="NexaHeavy"
+                                    Format="D"
+                                    TextColor="#C9C9C9" />
                             </VerticalStackLayout>
                         </Frame>
 
@@ -278,6 +285,30 @@
             Background="{DynamicResource White}"
             CornerRadius="30,30,0,0"
             ZIndex="-1" />
+        <!--  || SNAKBAR ||  -->
+        <Border
+            Grid.RowSpan="60"
+            Background="Black"
+            HorizontalOptions="Center"
+            InputTransparent="True"
+            Opacity="{Binding SnackBarOpacity}"
+            Stroke="Transparent"
+            StrokeShape="RoundRectangle 5"
+            VerticalOptions="Center"
+            ZIndex="100">
+            <Border.Shadow>
+                <Shadow Brush="Black" Radius="30" />
+            </Border.Shadow>
+            <Label
+                Padding="10"
+                InputTransparent="True"
+                Text="{Binding SnackBarMessage}"
+                TextColor="White"
+                VerticalOptions="Center"
+                ZIndex="101" />
+        </Border>
+
+
     </Grid>
 
 </ContentPage>

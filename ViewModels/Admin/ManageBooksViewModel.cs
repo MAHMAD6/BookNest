@@ -1,4 +1,5 @@
 ﻿using BookNest.Models;
+using BookNest.ViewModels.Components;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -11,6 +12,16 @@ namespace BookNest.ViewModels.Admin
     {
 
         #region Properties
+
+        // Snack Bar
+
+        [ObservableProperty]
+        private float _snackBarOpacity = 0;
+
+        [ObservableProperty]
+        private string _snackBarMessage = string.Empty;
+
+        //
 
         private string textSearch = string.Empty;
 
@@ -72,24 +83,24 @@ namespace BookNest.ViewModels.Admin
 
         public ManageBooksViewModel()
         {
-            var newAuthor = new Author { Name = "J.K. Rowling" };
-            App.AuthorsRepo.SaveItem(newAuthor);
+            //var newAuthor = new Author { Name = "J.K. Rowling" };
+            //App.AuthorsRepo.SaveItem(newAuthor);
 
-            var newCategory = new Category { Name = "Fantasy" };
-            App.CategoriesRepo.SaveItem(newCategory);
+            //var newCategory = new Category { Name = "Fantasy" };
+            //App.CategoriesRepo.SaveItem(newCategory);
 
-            var newBook = new Book
-            {
-                Title = "Harry Potter ",
-                ISBN = "978-0439708180",
-                AuthorId = newAuthor.Id,
-                CategoryId = newCategory.Id,
-                AvailabilityStatus = "Available",
-                CreatedAt = DateTime.Now,
-                ModifiedAt = DateTime.Now,
-            };
+            //var newBook = new Book
+            //{
+            //    Title = "Harry Potter ",
+            //    ISBN = "978-0439708180",
+            //    AuthorId = newAuthor.Id,
+            //    CategoryId = newCategory.Id,
+            //    AvailabilityStatus = "Available",
+            //    CreatedAt = DateTime.Now,
+            //    ModifiedAt = DateTime.Now,
+            //};
 
-            App.BooksRepo.SaveItem(newBook);
+            //App.BooksRepo.SaveItem(newBook);
 
 
             LoadAuthors();
@@ -106,11 +117,17 @@ namespace BookNest.ViewModels.Admin
             isAddBook = true;
             IsAddEditBookVisible = true;
             AddEditBookHeading = "Add Book";
+
+            LoadAuthors();
+            LoadCategories();
         }
 
         [RelayCommand]
         public void EditBook(Book book)
         {
+
+            LoadAuthors();
+            LoadCategories();
             IsPopupVisible = true;
             IsAddEditBookVisible = true;
             AddEditBookHeading = "Edit Book";
@@ -120,14 +137,14 @@ namespace BookNest.ViewModels.Admin
             AvailabilityStatus = tempBook.AvailabilityStatus;
             foreach (var author in Authors)
             {
-                if (book.Author.Name == author.Name)
+                if (book != null &&  book.Author != null && book.Author.Name == author.Name)
                 {
                     SelectedAuthor = author;
                 }
             }
             foreach (var category in Categories)
             {
-                if (book.Category.Name == category.Name)
+                if (book != null && book.Category != null && book.Category.Name == category.Name)
                 {
                     SelectedCategory = category;
                 }
@@ -139,6 +156,17 @@ namespace BookNest.ViewModels.Admin
         [RelayCommand]
         private void AddEditBookConfirm()
         {
+            if(!Validation.IsValidBookTitle(Title))
+            {
+                ShowSnackBar("Invalid Title");
+                return;
+            }
+            if (!Validation.IsValidISBN(ISBN))
+            {
+                ShowSnackBar("Invalid ISBN");
+                return;
+            }
+
             if (isAddBook)
             {
                 Book newBook = new Book
@@ -214,7 +242,7 @@ namespace BookNest.ViewModels.Admin
         }
 
         [RelayCommand]
-        private async void GoToBookRequest()
+        private async Task GoToBookRequest()
         {
             await Shell.Current.GoToAsync("//BookRequests");
         }
@@ -250,6 +278,28 @@ namespace BookNest.ViewModels.Admin
             {
                 Categories.Add(category);
             }
+        }
+
+        private async void ShowSnackBar(string message)
+        {
+            SnackBarMessage = message;
+
+
+            for (float i = 0.0f; i <= 0.9f; i += 0.1f)
+            {
+                SnackBarOpacity = i;
+                await Task.Delay(50);
+            }
+
+            await Task.Delay(4000);
+
+
+            for (float i = 0.9f; i >= 0.0f; i -= 0.1f)
+            {
+                SnackBarOpacity = i;
+                await Task.Delay(50);
+            }
+            SnackBarOpacity = 0;
         }
 
     }
