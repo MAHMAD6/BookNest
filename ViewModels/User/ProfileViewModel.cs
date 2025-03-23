@@ -42,7 +42,7 @@ namespace BookNest.ViewModels.User
         }
 
         [RelayCommand]
-        private void ClosePopup()
+        public void ClosePopup()
         {
             IsPopUpVisible = false;
             UserName = App.CurrentUser?.Username ?? string.Empty;
